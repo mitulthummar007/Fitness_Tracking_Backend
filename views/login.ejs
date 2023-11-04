@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #3498db;
+      border: none;
+      border-radius: 3px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    #error-message {
+      margin-top: 10px;
+      color: red;
+    }
+
+    #success-message {
+      margin-top: 10px;
+      color: green;
+    }
+    .home{
+      margin-left: 370px;
+      width: 5%;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Login</h1>
+  <div class="home"><a href="/dashboard"><button>Home</button></a></div>
+  <form id="loginform" action="/login" method="post">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required>
+    <center><p><a href="./forgot-password">Forgot Password?</a></p></center>
+    <br>
+    <button type="submit" id="loginButton">Login</button>
+    <div id="error-message" style="color: red;"></div>
+    <div id="success-message" style="color: green;"></div>
+
+    <p>account not register click to register? <a href="/register">Register</a>.</p>
+  </form>
+  <script>
+ let successMessageDisplayed = false;
+document.querySelector('form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const response = await fetch('/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: document.getElementById('username').value,
+      password: document.getElementById('password').value,
+    }),
+  });
+
+  const data = await response.json();
+
+  // Clear both error and success messages
+  document.getElementById('error-message').textContent = '';
+  document.getElementById('success-message').textContent = '';
+
+  if (response.status === 400 || response.status === 401) {
+    document.getElementById('error-message').textContent = data.message;
+  } else if (response.status === 201) {
+    document.getElementById('success-message').textContent = data.message;
+    successMessageDisplayed = true;
+    setTimeout(() => {
+      window.location.href = '/dashboard';
+    }, 1000);
+  }
+});
+
+  </script>
+</body>
+
+</html>

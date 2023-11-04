@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input {
+      width: 95%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #3498db;
+      border: none;
+      border-radius: 3px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    #error-message {
+      margin-top: 10px;
+      color: red;
+    }
+
+    #success-message {
+      margin-top: 10px;
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Register</h1>
+  <form id="registrationForm" action="/register" method="post">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required>
+    <br>
+    <label for="email">Email:</label>
+    <input type="text" name="email" id="email" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required>
+    <br>
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name">
+    <br>
+    <label for="age">Age:</label>
+    <input type="number" name="age" id="age">
+    <br>
+    <label for="weight">Weight (in kg):</label>
+    <input type="number" name="weight" id="weight">
+    <br>
+    <label for="fitnessGoals">Fitness Goals:</label>
+    <input type="text" name="fitnessGoals" id="fitnessGoals">
+    <br>
+    <label for="fitnessLevel">Fitness Level:</label>
+    <input type="text" name="fitnessLevel" id="fitnessLevel">
+    <br>
+    <button type="submit" id="registerButton">Register</button>
+    <div id="error-message" style="color: red;"></div>
+    <div id="success-message" style="color: green;"></div>
+    <p>already register click login <a href="/login">Login</a>.</p>
+  </form>
+  <script>
+    let successMessageDisplayed = false;
+    document.querySelector('form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: document.getElementById('username').value,
+          email: document.getElementById('email').value,
+          password: document.getElementById('password').value,
+          name: document.getElementById('name').value,
+          age: document.getElementById('age').value,
+          weight: document.getElementById('weight').value,
+          fitnessGoals: document.getElementById('fitnessGoals').value,
+          fitnessLevel: document.getElementById('fitnessLevel').value,
+        }),
+      });
+      const data = await response.json();
+      if (response.status === 400) {
+        document.getElementById('error-message').textContent = data.message;
+      } else if (response.status === 201) {
+        document.getElementById('success-message').textContent = data.message;
+        document.getElementById('error-message').textContent = '';
+        successMessageDisplayed = true;
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 1000);
+      }
+    })
+  </script>
+</body>
+
+</html>

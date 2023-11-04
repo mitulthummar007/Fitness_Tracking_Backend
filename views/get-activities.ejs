@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>User Activities</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="m-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/dashboard" class="nav-link active">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle"  id="activityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Activities
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="activityDropdown">
+                                <li><a class="dropdown-item" href="/add-activities">Add Activity</a></li>
+                                <li><a class="dropdown-item" href="/get-activities">Get All Activities</a></li>
+                                <li><a class="dropdown-item" href="/get-user-activities">Get User Activity</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/about" class="nav-link">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <h1>User Activities</h1>
+    
+    <% if (data.length === 0) { %>
+        <p>No activities available for this user.</p>
+    <% } else { %>
+        <% data.forEach(activity => { %>
+            <table>
+                <tr>
+                    <th>Type</th>
+                    <td><%= activity.type %></td>
+                </tr>
+                <tr>
+                    <th>Username</th>
+                    <td><%= activity.username %></td>
+                </tr>
+                <tr>
+                    <th>Distance</th>
+                    <td><%= activity.distance %> meters</td>
+                </tr>
+                <tr>
+                    <th>Duration</th>
+                    <td><%= activity.duration %> seconds</td>
+                </tr>
+                <tr>
+                    <th>Speed</th>
+                    <td><%= activity.speed %> m/s</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td><%= activity.date %></td>
+                </tr>
+            </table>
+            <br>
+        <% }); %>
+    <% } %>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
